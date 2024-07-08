@@ -12,6 +12,7 @@ $('#fileInput').on('change', function() {
         html: inputHtml,
         allowOutsideClick: false,
         allowEscapeKey: false,
+        confirmButtonText: 'SALVAR',
         willOpen: () => {
             const cropperImage = Swal.getPopup().querySelector('#cropperjs');
             const file = fileInput.files[0];
