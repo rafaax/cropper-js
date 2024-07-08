@@ -10,6 +10,8 @@ const inputHtml = `
 $('#fileInput').on('change', function() {
     Swal.fire({
         html: inputHtml,
+        allowOutsideClick: false,
+        allowEscapeKey: false,
         willOpen: () => {
             const cropperImage = Swal.getPopup().querySelector('#cropperjs');
             const file = fileInput.files[0];
@@ -20,8 +22,9 @@ $('#fileInput').on('change', function() {
                     cropperImage.style.display = 'block';
                     cropperImage.onload = () => {
                         cropper = new Cropper(cropperImage, {
-                            aspectRatio: 4 / 3,
+                            aspectRatio: 4 / 3 ,
                             viewMode: 1,
+                            autoCropArea: 0.6,
                         });
                     };
                 };
