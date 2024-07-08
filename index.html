@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/cropperjs/dist/cropper.min.css">
+  <style>
+    #preview {
+      display: none;
+    }
+    #cropperjs {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+<html>
+    <img id="result" src="" width="400px">
+</html>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var cropper;
+    const inputHtml = `
+        <input type="file" id="fileInput" accept="image/*">
+        <img id="preview" style="display: none;">
+        <div>
+          <img id="cropperjs" style="display: none;">
+        </div>
+    `;
+
+    Swal.fire({
+        html: inputHtml,
+        willOpen: () => {
+            const fileInput = Swal.getPopup().querySelector('#fileInput');
+            const preview = Swal.getPopup().querySelector('#preview');
+            const cropperImage = Swal.getPopup().querySelector('#cropperjs');
+
+            fileInput.addEventListener('change', function () {
+            const file = fileInput.files[0];
+            if (file) {
+              const reader = new FileReader();
+              reader.onload = function (e) {
+                cropperImage.src = e.target.result;
+                cropperImage.style.display = 'block';
+                cropperImage.onload = () => {
+                    cropper = new Cropper(cropperImage, {
+                    aspectRatio: 1,
+                    viewMode: 1,
+                    crop(event) {
+                        // console.log(event.detail.x);
+                        // console.log(event.detail.y);
+                        // console.log(event.detail.width);
+                        // console.log(event.detail.height);
+                        // console.log(event.detail.rotate);
+                        // console.log(event.detail.scaleX);
+                        // console.log(event.detail.scaleY);
+                    }
+                  });
+                };
+              };
+              reader.readAsDataURL(file);
+            }
+          });
+        },
+      }).then((result) => {
+        cropper.getCroppedCanvas().toBlob(blob => {
+            // console.log("toBlob");
+            // console.dir(blob);
+            cropper.clear();
+            var pngFile = URL.createObjectURL(blob);
+            URL.revokeObjectURL(pngFile);
+            
+            console.dir(pngFile);
+            var reader = new FileReader();
+            reader.onloadend = function(e) {
+                console.log(reader.result);
+                img.attr("src", reader.result);
+                $('#result').attr("src", reader.result);
+            };
+            reader.readAsDataURL(blob);
+        })
+        
+      });
+    });
+</script>
+</body>
+</html>
