@@ -10,31 +10,29 @@
 <body>
 <html>
     <input type="file" id="fileInput" accept="image/*">
-    <img id="preview" style="display: none;">
     <img id="result" src="" width="400px">
 </html>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+$( document ).ready(function() {
+
     var cropper;
+    const fileInput = document.querySelector('#fileInput');
+
     const inputHtml = `
-        <input type="file" id="fileInput" accept="image/*">
-        <img id="preview" style="display: none; background-color: white;">
         <div>
           <img id="cropperjs" style="display: none; background-color: white;">
         </div>
     `;
 
-    Swal.fire({
-        html: inputHtml,
-        willOpen: () => {
-            const fileInput = Swal.getPopup().querySelector('#fileInput');
-            const cropperImage = Swal.getPopup().querySelector('#cropperjs');
+    fileInput.addEventListener('change', function () {
 
-            fileInput.addEventListener('change', function () {
-                // console.log('arquvio mudou');
-                console.log(fileInput.files)
+        Swal.fire({
+            html: inputHtml,
+            willOpen: () => {
+                const cropperImage = Swal.getPopup().querySelector('#cropperjs');
                 const file = fileInput.files[0];
                 if (file) {
                     const reader = new FileReader();
@@ -50,30 +48,29 @@ document.addEventListener('DOMContentLoaded', function () {
                     };
                     reader.readAsDataURL(file);
                 }
-          });
-        },
-      }).then((result) => {
-        if (result.isConfirmed) {
-            cropper.getCroppedCanvas({fillColor: '#fff'}).toBlob(blob => {
-                // console.log("toBlob");
-                // console.dir(blob);
-                cropper.clear();
-                var pngFile = URL.createObjectURL(blob);
-                URL.revokeObjectURL(pngFile);
-                
-                console.dir(pngFile);
-                var reader = new FileReader();
-                reader.onloadend = function(e) {
-                    console.log(reader.result);
-                    // img.attr("src", reader.result);
-                    $('#result').attr("src", reader.result);
-                };
-                reader.readAsDataURL(blob);
-            })
-        }
-      });
+            },
+        }).then((result) => {
+            if (result.isConfirmed) {
+                cropper.getCroppedCanvas({fillColor: '#fff'}).toBlob(blob => {
+                    // console.log("toBlob");
+                    // console.dir(blob);
+                    cropper.clear();
+                    var pngFile = URL.createObjectURL(blob);
+                    URL.revokeObjectURL(pngFile);
+                    
+                    console.dir(pngFile);
+                    var reader = new FileReader();
+                    reader.onloadend = function(e) {
+                        console.log(reader.result);
+                        // img.attr("src", reader.result);
+                        $('#result').attr("src", reader.result);
+                    };
+                    reader.readAsDataURL(blob);
+                })
+            }
+        });
+    });
 });
 </script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
 </body>
 </html>
