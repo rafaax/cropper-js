@@ -31,17 +31,13 @@ $('#fileInput').on('change', function() {
     }).then((result) => {
         if (result.isConfirmed) {
             cropper.getCroppedCanvas({fillColor: '#fff'}).toBlob(blob => {
-                // console.log("toBlob");
-                // console.dir(blob);
                 cropper.clear();
                 var pngFile = URL.createObjectURL(blob);
                 URL.revokeObjectURL(pngFile);
-                
-                console.dir(pngFile);
+                // console.dir(pngFile);
                 var reader = new FileReader();
                 reader.onloadend = function(e) {
-                    console.log(reader.result);
-                    // img.attr("src", reader.result);
+                    // console.log(reader.result);
                     $('#result').attr("src", reader.result);
                 };
                 reader.readAsDataURL(blob);
