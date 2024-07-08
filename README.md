@@ -1,0 +1,1 @@
+Cropper JS + SweetAlert
