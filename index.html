@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 cropperImage.style.display = 'block';
                 cropperImage.onload = () => {
                     cropper = new Cropper(cropperImage, {
-                    aspectRatio: 1,
+                    aspectRatio: 4 / 3,
                     viewMode: 1,
                     crop(event) {
                         // console.log(event.detail.x);
@@ -67,25 +67,30 @@ document.addEventListener('DOMContentLoaded', function () {
           });
         },
       }).then((result) => {
-        cropper.getCroppedCanvas().toBlob(blob => {
-            // console.log("toBlob");
-            // console.dir(blob);
-            cropper.clear();
-            var pngFile = URL.createObjectURL(blob);
-            URL.revokeObjectURL(pngFile);
-            
-            console.dir(pngFile);
-            var reader = new FileReader();
-            reader.onloadend = function(e) {
-                console.log(reader.result);
-                img.attr("src", reader.result);
-                $('#result').attr("src", reader.result);
-            };
-            reader.readAsDataURL(blob);
-        })
+
+        if (result.isConfirmed) {
+            cropper.getCroppedCanvas().toBlob(blob => {
+                // console.log("toBlob");
+                // console.dir(blob);
+                cropper.clear();
+                var pngFile = URL.createObjectURL(blob);
+                URL.revokeObjectURL(pngFile);
+                
+                console.dir(pngFile);
+                var reader = new FileReader();
+                reader.onloadend = function(e) {
+                    console.log(reader.result);
+                    // img.attr("src", reader.result);
+                    $('#result').attr("src", reader.result);
+                };
+                reader.readAsDataURL(blob);
+            })
+        }
+        
         
       });
     });
 </script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
 </body>
 </html>
