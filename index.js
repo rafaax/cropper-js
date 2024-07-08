@@ -3,7 +3,7 @@ const fileInput = document.querySelector('#fileInput');
 
 const inputHtml = `
     <div>
-        <img id="cropperjs" style="display: none; background-color: white;">
+        <img id="cropperjs" class="display-img">
     </div>
 `;
 
@@ -20,9 +20,9 @@ $('#fileInput').on('change', function() {
                     cropperImage.style.display = 'block';
                     cropperImage.onload = () => {
                         cropper = new Cropper(cropperImage, {
-                        aspectRatio: 4 / 3,
-                        viewMode: 1,
-                    });
+                            aspectRatio: 4 / 3,
+                            viewMode: 1,
+                        });
                     };
                 };
                 reader.readAsDataURL(file);

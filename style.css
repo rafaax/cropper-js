@@ -2,3 +2,8 @@
 .cropper-face {
     border-radius: 50%;
 }
+
+.display-img {
+    display: none;
+    background-color: white;
+}
